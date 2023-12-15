@@ -23,9 +23,9 @@ class DashboardController extends Controller
                                >';
                         })
                         ->addColumn('action', function($row){
-                            $viewBtn = '<a href="javascript:void(0)" class="view btn btn-primary btn-sm" data-id="'.$row->id.'">View</a>';
-                            $editBtn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm" data-id="'.$row->id.'">Edit</a>';
-                            $deleteBtn = '<a href="javascript:void(0)" class="delete btn btn-primary btn-sm" data-id="'.$row->id.'">Delete</a>';
+                            $viewBtn = '<a href="javascript:void(0)" class="view btn btn-secondary btn-sm" data-id="'.$row->id.'">View</a>';
+                            $editBtn = '<a href="javascript:void(0)" class="edit btn btn-secondary btn-sm" data-id="'.$row->id.'">Edit</a>';
+                            $deleteBtn = '<a href="javascript:void(0)" class="delete btn btn-secondary btn-sm" data-id="'.$row->id.'">Delete</a>';
                         
                             return $viewBtn . ' ' . $editBtn . ' ' . $deleteBtn;
                         })

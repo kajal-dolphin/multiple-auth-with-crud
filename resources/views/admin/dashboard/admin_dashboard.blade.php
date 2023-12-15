@@ -1,9 +1,9 @@
 @extends('admin.layout.app')
 
 @section('content')
-    <div class="content-wrapper">
+    <div class="content-wrapper bg-light text-dark">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
+        <section class="content-header" style="background-color: aliceblue; color:black;">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
@@ -17,15 +17,15 @@
                 </div>
             </div>
         </section>
-        <section class="content">
-        <div class="container-fluid">
-            <div class="row">
+        <section class="content" style="background-color: aliceblue">
+        <div class="container-fluid" style="background-color: aliceblue; color:black;">
+            <div class="row" style="background-color: aliceblue; color:black;">
                 <div class="col-12">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header" style="background-color: aliceblue; color:black;">
                             <h3 class="card-title">User List</h3>
                         </div>
-                    <div class="card-body">
+                    <div class="card-body" style="background-color: aliceblue; color:black;">
                         <table class="table table-bordered data-table">
                             <thead>
                                 <tr>
