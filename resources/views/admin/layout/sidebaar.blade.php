@@ -14,7 +14,7 @@
                 <li class="nav-item menu-open">
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a class="nav-link active">
+                            <a class="nav-link active" href="{{ route('admin.dashboard')}}">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Users</p>
                             </a>

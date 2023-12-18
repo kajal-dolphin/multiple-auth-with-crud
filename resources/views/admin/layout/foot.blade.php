@@ -13,5 +13,5 @@
 
 <script src="{{ asset('dist/js/adminlte.js')}}"></script>
 
-
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.js"></script>
 

@@ -3,7 +3,17 @@
 @section('content')
     <div class="content-wrapper bg-light text-dark">
         <!-- Content Header (Page header) -->
-        <section class="content-header" style="background-color: aliceblue; color:black;">
+        <section class="content-header" >
+            @if (\Session::has('success'))
+                <div class="alert alert-success fade-message">
+                    <p>{{ \Session::get('success') }}</p>
+                </div><br />
+            @endif 
+            @if (\Session::has('error'))
+                <div class="alert alert-danger fade-message">
+                    <p>{{ \Session::get('danger') }}</p>
+                </div><br />
+            @endif 
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
@@ -17,32 +27,32 @@
                 </div>
             </div>
         </section>
-        <section class="content" style="background-color: aliceblue">
-        <div class="container-fluid" style="background-color: aliceblue; color:black;">
-            <div class="row" style="background-color: aliceblue; color:black;">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header" style="background-color: aliceblue; color:black;">
-                            <h3 class="card-title">User List</h3>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">User List</h3>
+                            </div>
+                        <div class="card-body">
+                            <table class="table table-bordered data-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20px">No</th>
+                                        <th style="width: 50px">Name</th>
+                                        <th style="width: 40px">Email</th>
+                                        <th style="width: 20px">Status</th>
+                                        <th width="100px">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
                         </div>
-                    <div class="card-body" style="background-color: aliceblue; color:black;">
-                        <table class="table table-bordered data-table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 20px">No</th>
-                                    <th style="width: 50px">Name</th>
-                                    <th style="width: 40px">Email</th>
-                                    <th style="width: 20px">Status</th>
-                                    <th width="100px">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
-        </div>
         </section>
     </div>
 @endsection
@@ -87,6 +97,10 @@
                 }
             });
         });
+
+        setTimeout(function() {
+            $('.fade-message').slideUp();
+        }, 3000);
     });
 </script>
 @endsection
