@@ -23,13 +23,23 @@ class DashboardController extends Controller
                                >';
                         })
                         ->addColumn('action', function($row){
-                            $viewBtn = '<a href="javascript:void(0)" data-id="'.$row->id.'" class="btn btn-secondary">
-                            <i class="fa fa-eye"></i></a>';
-                            $editBtn = '<a href="javascript:void(0)" data-id="'.$row->id.'" class="btn btn-secondary">
-                            <i class="fa fa-edit"></i></a>';
-                            $deleteBtn = '<a href="javascript:void(0)" data-id="'.$row->id.'" class="btn btn-secondary">
-                            <i class="fa fa-trash"></i></a>';
-                        
+                            $activeUser = $row->status == 1 ? 'active' : '';
+                            $viewBtn = '';
+                            if($activeUser == 'active') {
+                                $viewBtn .= '<a href="javascript:void(0)" data-view-id="'.$row->id.'" class="btn btn-secondary viewData">';
+                                $viewBtn .= '<i class="fa fa-eye"></i>';
+                                $viewBtn .= '</a>';
+                            }
+                            $editBtn = '';
+                            if($activeUser == 'active'){
+                                $editBtn = '<a href="javascript:void(0)" data-edit-id="'.$row->id.'" class="btn btn-secondary editData">
+                                <i class="fa fa-edit"></i></a>';
+                            }
+                            $deleteBtn = '';
+                            if($activeUser == 'active'){
+                                $deleteBtn = '<a href="javascript:void(0)" data-delete-id="'.$row->id.'" class="btn btn-secondary deleteData">
+                                <i class="fa fa-trash"></i></a>';
+                            }
                             return $viewBtn . ' ' . $editBtn . ' ' . $deleteBtn;
                         })
                         ->rawColumns(['action','status'])

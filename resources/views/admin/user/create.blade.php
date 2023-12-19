@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="mb-3 col-md-6 form-group">
                         <label for="name" class="form-label">Name</label>
-                        <input type="texy" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="name">
                     </div>
                     <div class="mb-3 col-md-6 form-group">
                         <label for="email" class="form-label">Email address</label>
@@ -33,6 +33,7 @@
                     <div class="mb-3 col-md-6 form-group">
                         <label for="exampleInputPassword1" class="form-label">Image</label>
                         <input type="file" class="form-control" id="photo" name="photo">
+                        <img src="#" id="preview_img" width="200px" style="display:none;"/> 
                     </div>
                 </div> 
                 <div class="row input_fields_wrap">
@@ -41,8 +42,8 @@
                         <textarea class="form-control" id="address" rows="3" name="multiple_addresses[0][address]"></textarea>
                     </div>
                     <div class="mb-3 col-md-1 form-check pt-5">
-                        <input class="form-check-input" type="checkbox" value="1" id="make_as_default" name="multiple_addresses[0][make_as_default]">
-                        <label class="form-check-label" for="make_as_default">
+                        <input class="form-check-input" type="checkbox" value="1" id="is_default" name="multiple_addresses[0][is_default]">
+                        <label class="form-check-label" for="is_default">
                             Mark as Default
                         </label>
                     </div>
@@ -123,11 +124,10 @@
                     $(wrapper).append(
                         '<div class=row>' + 
                         '<div class="mb-3 col-md-9 form-group">' + 
-                        '<label for="address" class="form-label">' +
-                        'Address</label><textarea class="form-control" id="address" rows="3" name="multiple_addresses[' + (x - 1) + '][address]"></textarea></div>' + 
+                        '<textarea class="form-control" id="address" rows="3" name="multiple_addresses[' + (x - 1) + '][address]"></textarea></div>' + 
                         '<div class="mb-3 col-md-1 form-check pt-5">' + 
-                        '<input class="form-check-input" type="checkbox" value="1" id="mark_as_default" name="multiple_addresses[' + (x - 1) + '][make_as_default]">' + 
-                        '<label class="form-check-label" for="make_as_default">Mark as Default</label></div>' + 
+                        '<input class="form-check-input" type="checkbox" value="1" id="is_default" name="multiple_addresses[' + (x - 1) + '][is_default]">' + 
+                        '<label class="form-check-label" for="is_default">Mark as Default</label></div>' + 
                         '<div class="mb-3 col-md-1 form-check pt-5"><input type="button" class="btn btn-secondary remove_field" value="Remove"></div></div>'
                         ); // add input boxes.
                 }
@@ -135,7 +135,17 @@
             
             $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
                 e.preventDefault(); $(this).parent('div').parent('div').remove(); x--;
-            })
+            });
+
+            //for preview image
+            photo.onchange = evt => {
+                preview = document.getElementById('preview_img');
+                preview.style.display = 'block';
+                const [file] = photo.files
+                if (file) {
+                    preview.src = URL.createObjectURL(file)
+                }
+            }
         });
     </script>
 @endsection
