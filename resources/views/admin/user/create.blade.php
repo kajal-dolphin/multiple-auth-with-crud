@@ -143,6 +143,9 @@
                                 $('.remove_' + rowIndexValue).css("display", "block");
                                 $('.remove_' + rowIndex).css("display", "block");
                             }
+                            else{
+                                console.log("in else part");
+                            }
                         } else {
                             console.log('error', res.message);
                         }

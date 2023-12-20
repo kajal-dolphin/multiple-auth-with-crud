@@ -16,7 +16,6 @@ class UserController extends Controller
         return view('admin.user.create');
     }
     public function store(UserRequest $request){
-        dd($request->all());
         try {
             $user = User::create([
                 'name' => $request->name,
