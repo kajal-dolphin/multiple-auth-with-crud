@@ -53,3 +53,4 @@ Route::get('/delete-user/{id}',[UserController::class,'delete'])->name('user.del
 Route::get('/show-user/{id}',[UserController::class,'show'])->name('user.show');
 Route::post('/update-user/{id}',[UserController::class,'update'])->name('user.update');
 Route::get('/change-status',[DashboardController::class,'changeStatus'])->name('user.change.status');
+Route::post('/clone-column',[UserController::class,'cloneColumn'])->name('user.clone.column');

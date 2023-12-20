@@ -118,7 +118,7 @@
             </div> --}}
         </li>
         <li class="nav-item">
-            <a  href="{{ route('admin.logout')}}" class="btn btn-secondary">
+            <a  href="{{ route('admin.logout')}}" class="btn btn-primary">
                 Log Out
             </a>
         </li>

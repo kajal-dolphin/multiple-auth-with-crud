@@ -28,7 +28,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <a href="{{ route('user.create') }}" class="btn btn-secondary"> Add User +</a>
+                        <a href="{{ route('user.create') }}" class="btn btn-primary"> Add User +</a>
                     </ol>
                 </div>
             </div>

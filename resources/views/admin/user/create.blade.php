@@ -20,40 +20,44 @@
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name">
                     </div>
+                    @error('name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                     <div class="mb-3 col-md-6 form-group">
                         <label for="email" class="form-label">Email address</label>
                         <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
                     </div>
+                    @error('email')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="row">
                     <div class="mb-3 col-md-6 form-group">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password">
+                        @error('password')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="mb-3 col-md-6 form-group">
                         <label for="exampleInputPassword1" class="form-label">Image</label>
                         <input type="file" class="form-control" id="photo" name="photo">
-                        <img src="#" id="preview_img" width="200px" style="display:none;"/> 
+                        <img src="#" id="preview_img" width="200px" style="display:none;"/>
+                        @error('photo')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div> 
-                <div class="row input_fields_wrap">
-                    <div class="mb-3 col-md-9 form-group">
-                        <label for="address" class="form-label">Address</label>
-                        <textarea class="form-control" id="address" rows="3" name="multiple_addresses[0][address]"></textarea>
-                    </div>
-                    <div class="mb-3 col-md-1 form-check pt-5">
-                        <input class="form-check-input" type="checkbox" value="1" id="is_default" name="multiple_addresses[0][is_default]">
-                        <label class="form-check-label" for="is_default">
-                            Mark as Default
-                        </label>
-                    </div>
-                    <div class="mb-3 col-md-1 form-check pt-5">
-                        <input type="button" class="btn btn-secondary add_field_button" value="Add more">
-                    </div>
+                <div id="add_more_feild">
+                    {{-- @forelse ()
+                        @include('admin.user.clone-column',['rowIndex' => '1'])
+                    @empty --}}
+                        @include('admin.user.clone-column',['rowIndex' => '1'])
+                    {{-- @endforelse --}}
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-secondary">Submit</button>
-                    <a type="buttton" class="btn btn-secondary" href="{{ route('admin.dashboard') }}">Back</a>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <a type="buttton" class="btn btn-danger" href="{{ route('admin.dashboard') }}">Back</a>
                 </div>
             </form>
         </div>
@@ -63,6 +67,8 @@
 @section('scripts')
     <script>
         $(document).ready(function (){
+
+            //for validation
             $('#userForm').validate({
                 rules: {
                     name : {
@@ -112,29 +118,68 @@
                 }
             });
 
-            var max_fields      = 5; //maximum input boxes allowed
-            var wrapper         = $(".input_fields_wrap"); //Fields wrapper
-            var add_button      = $(".add_field_button"); //Add button ID
-            
-            var x = 1; //initlal text box count
-            $(add_button).click(function(e){ //on add input button click
-                e.preventDefault();
-                if(x < max_fields){ //max input box allowed
-                    x++; //text box increment
-                    $(wrapper).append(
-                        '<div class=row>' + 
-                        '<div class="mb-3 col-md-9 form-group">' + 
-                        '<textarea class="form-control" id="address" rows="3" name="multiple_addresses[' + (x - 1) + '][address]"></textarea></div>' + 
-                        '<div class="mb-3 col-md-1 form-check pt-5">' + 
-                        '<input class="form-check-input" type="checkbox" value="1" id="is_default" name="multiple_addresses[' + (x - 1) + '][is_default]">' + 
-                        '<label class="form-check-label" for="is_default">Mark as Default</label></div>' + 
-                        '<div class="mb-3 col-md-1 form-check pt-5"><input type="button" class="btn btn-secondary remove_field" value="Remove"></div></div>'
-                        ); // add input boxes.
-                }
+            //for add new row dynamically
+            $(document).on('click','.add_field_button',function (){
+                let id = $(this).attr('id');
+                let rowIndexValue = id.split('_').pop();
+                let rowIndex = parseInt(rowIndexValue) + 1;
+
+                let url = "{{ route('user.clone.column') }}";
+                $.ajax({
+                    url : url,
+                    type : 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data : {
+                        rowIndex : rowIndex,
+                    },
+                    success : function(res) {
+                        if (res && res.success) {
+                            $('#add_more_feild').append(res.html);
+                            var numItems = $('.item').length;
+                            if (numItems > 0) {
+                                $('.add_more_' + rowIndexValue).css("display", "none");
+                                $('.remove_' + rowIndexValue).css("display", "block");
+                                $('.remove_' + rowIndex).css("display", "block");
+                            }
+                        } else {
+                            console.log('error', res.message);
+                        }
+                    },
+                    error: function (res) {
+                        console.log('error', res.message);
+                    },
+                })
             });
-            
-            $(wrapper).on("click",".remove_field", function(e){ //user click on remove text
-                e.preventDefault(); $(this).parent('div').parent('div').remove(); x--;
+
+            //for remove row
+            $(document).on('click','.remove_field_button', function (){
+                let itemLength = $('.item').length;
+                let rowId = $(this).attr('id');
+                let rowIndexId = rowId.split('_');
+                if (rowIndexId.length > 0) {
+                    $('#item_' + rowIndexId[1]).remove();
+                }
+
+                $('.item').each(function(index) {
+                    var cloneIndex = index + 1;
+                    $(this).attr('id', 'item_' + cloneIndex);
+                    $(this).find(':input,textarea').each(function(i) {
+                        let inputId = $(this).attr('id').slice(0, -1);
+                        $(this).attr('id', inputId + cloneIndex);
+                        $(this).attr('name', 'multiple_addresses[' + cloneIndex + '][' + inputId
+                            .slice(0, -1) + ']');
+                    });
+
+                    if (itemLength == 2) {
+                        $('.add_more_' + cloneIndex).show();
+                        $('.remove_' + cloneIndex).hide();
+                    } else if (cloneIndex + 1 == itemLength) {
+                        // $('.add_more_' + cloneIndex).show();
+                        $('.remove_' + cloneIndex).show();
+                    }
+                });
             });
 
             //for preview image

@@ -26,18 +26,18 @@ class DashboardController extends Controller
                             $activeUser = $row->status == 1 ? 'active' : '';
                             $viewBtn = '';
                             if($activeUser == 'active') {
-                                $viewBtn .= '<a href="javascript:void(0)" data-view-id="'.$row->id.'" class="btn btn-secondary viewData">';
+                                $viewBtn .= '<a href="javascript:void(0)" data-view-id="'.$row->id.'" class="btn btn-warning viewData">';
                                 $viewBtn .= '<i class="fa fa-eye"></i>';
                                 $viewBtn .= '</a>';
                             }
                             $editBtn = '';
                             if($activeUser == 'active'){
-                                $editBtn = '<a href="javascript:void(0)" data-edit-id="'.$row->id.'" class="btn btn-secondary editData">
+                                $editBtn = '<a href="javascript:void(0)" data-edit-id="'.$row->id.'" class="btn btn-primary editData">
                                 <i class="fa fa-edit"></i></a>';
                             }
                             $deleteBtn = '';
                             if($activeUser == 'active'){
-                                $deleteBtn = '<a href="javascript:void(0)" data-delete-id="'.$row->id.'" class="btn btn-secondary deleteData">
+                                $deleteBtn = '<a href="javascript:void(0)" data-delete-id="'.$row->id.'" class="btn btn-danger deleteData">
                                 <i class="fa fa-trash"></i></a>';
                             }
                             return $viewBtn . ' ' . $editBtn . ' ' . $deleteBtn;

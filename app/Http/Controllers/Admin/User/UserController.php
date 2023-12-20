@@ -16,6 +16,7 @@ class UserController extends Controller
         return view('admin.user.create');
     }
     public function store(UserRequest $request){
+        dd($request->all());
         try {
             $user = User::create([
                 'name' => $request->name,
@@ -169,6 +170,20 @@ class UserController extends Controller
                 'success' => false,
                 'message' => "Something Went Wrong !!"
             ],200);
+        }
+    }
+
+    public function cloneColumn(Request $request){
+        try {
+            $html = View('admin.user.clone-column',['rowIndex' => $request->rowIndex ])->render();
+            return response()->json([
+                'html' => $html,
+                'success' => true,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+            ]);
         }
     }
 }
