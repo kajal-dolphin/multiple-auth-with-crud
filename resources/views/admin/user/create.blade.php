@@ -18,43 +18,45 @@
                 <div class="row">
                     <div class="mb-3 col-md-6 form-group">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
+                        @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('name')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
                     <div class="mb-3 col-md-6 form-group">
                         <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email">
+                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" value="{{old('email')}}">
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
-                    @error('email')
-                        <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
                 </div>
                 <div class="row">
                     <div class="mb-3 col-md-6 form-group">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password">
                         @error('password')
-                            <div class="alert alert-danger">{{ $message }}</div>
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3 col-md-6 form-group">
                         <label for="exampleInputPassword1" class="form-label">Image</label>
                         <input type="file" class="form-control" id="photo" name="photo">
-                        <img src="#" id="preview_img" width="200px" style="display:none;"/>
+                        <img src="#" id="preview_img" width="200px" style="display:none;"/> 
                         @error('photo')
-                            <div class="alert alert-danger">{{ $message }}</div>
+                            <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                 </div> 
                 <div id="add_more_feild">
-                    {{-- @forelse ()
-                        @include('admin.user.clone-column',['rowIndex' => '1'])
-                    @empty --}}
-                        @include('admin.user.clone-column',['rowIndex' => '1'])
-                    {{-- @endforelse --}}
-                </div>
+                    @php($i = 1)
+                    @forelse (old('multiple_addresses', []) as $input)
+                        @include('admin.user.clone-column', ['rowIndex' => $i, 'oldAddress' => $input['address']])
+                        @php($i++)
+                    @empty
+                        @include('admin.user.clone-column', ['rowIndex' => '1'])
+                    @endforelse
+                </div>                
                 <div>
                     <button type="submit" class="btn btn-success">Submit</button>
                     <a type="buttton" class="btn btn-danger" href="{{ route('admin.dashboard') }}">Back</a>
@@ -69,54 +71,54 @@
         $(document).ready(function (){
 
             //for validation
-            $('#userForm').validate({
-                rules: {
-                    name : {
-                        required : true,
-                        maxlength : 255,
-                    },
-                    email : {
-                        required : true,
-                        email : true
-                    },
-                    password : {
-                        required : true,
-                        minlength : 6
-                    },
-                    photo: {
-                        accept: "image/jpg,image/jpeg,image/png",
-                    }
-                },
-                messages : {
-                    name : {
-                        required : "Name is Required",
-                        maxlength : "Name cannot be more than 255 characters"
-                    },
-                    email : {
-                        required : "Email is required",
-                        email : "Email must be a valid email address"
-                    },
-                    password : {
-                        required : "Password is required",
-                        minlength : "Password must be at least 6 characters"
-                    },
-                    photo : {
-                        accept: "Please upload file in these format only (jpg, jpeg, png).", 
-                        max: "Image size cannot be more than 2048 bytes"
-                    }
-                },
-                errorElement: 'span',
-                errorPlacement: function (error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                }
-            });
+            // $('#userForm').validate({
+            //     rules: {
+            //         name : {
+            //             required : true,
+            //             maxlength : 255,
+            //         },
+            //         email : {
+            //             required : true,
+            //             email : true
+            //         },
+            //         password : {
+            //             required : true,
+            //             minlength : 6
+            //         },
+            //         photo: {
+            //             accept: "image/jpg,image/jpeg,image/png",
+            //         }
+            //     },
+            //     messages : {
+            //         name : {
+            //             required : "Name is Required",
+            //             maxlength : "Name cannot be more than 255 characters"
+            //         },
+            //         email : {
+            //             required : "Email is required",
+            //             email : "Email must be a valid email address"
+            //         },
+            //         password : {
+            //             required : "Password is required",
+            //             minlength : "Password must be at least 6 characters"
+            //         },
+            //         photo : {
+            //             accept: "Please upload file in these format only (jpg, jpeg, png).", 
+            //             max: "Image size cannot be more than 2048 bytes"
+            //         }
+            //     },
+            //     errorElement: 'span',
+            //     errorPlacement: function (error, element) {
+            //         error.addClass('invalid-feedback');
+            //         element.closest('.form-group').append(error);
+            //     },
+            //     highlight: function (element, errorClass, validClass) {
+            //         $(element).addClass('is-invalid');
+            //     },
+            //     unhighlight: function (element, errorClass, validClass) {
+            //         $(element).removeClass('is-invalid');
+            //     }
+            // });
 
             //for add new row dynamically
             $(document).on('click','.add_field_button',function (){

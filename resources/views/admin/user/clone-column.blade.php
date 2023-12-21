@@ -1,10 +1,16 @@
 <div class="row item" id="item_{{ $rowIndex }}">
     <div class="mb-3 col-md-9 form-group">
         <label for="address" class="form-label">Address</label>
-        <textarea class="form-control" id="address_{{$rowIndex}}" rows="3" name="multiple_addresses[{{$rowIndex}}][address]"></textarea>
+        <textarea class="form-control" id="address_{{$rowIndex}}" rows="3" name="multiple_addresses[{{$rowIndex}}][address]"> 
+            {{ old("multiple_addresses.$rowIndex.address", isset($oldAddress['address']) ? $oldAddress['address'] : '') }}
+        </textarea>
+        @error("multiple_addresses.$rowIndex.address")
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
     </div>
     <div class="mb-3 col-md-1 form-check pt-5">
-        <input class="form-check-input" type="checkbox" value="1" id="is_default_{{$rowIndex}}" name="multiple_addresses[{{$rowIndex}}][is_default]">
+        <input class="form-check-input" type="checkbox" value="1" id="is_default_{{$rowIndex}}" name="multiple_addresses[{{$rowIndex}}][is_default]" 
+        @if (old("multiple_addresses.$rowIndex.is_default", isset($oldAddress['is_default']) && $oldAddress['is_default'] == 1)) checked @endif>
         <label class="form-check-label" for="is_default">
             Mark as Default
         </label>

@@ -25,7 +25,8 @@ class UserRequest extends FormRequest
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'photo'  => 'image|mimes:jpg,png,jpeg'
+            'photo'  => 'image|mimes:jpg,png,jpeg',
+            'multiple_addresses.*.address' => 'required',
         ];
     }
 
@@ -36,11 +37,12 @@ class UserRequest extends FormRequest
             'name.max' => 'Name cannot be more than 255 characters',
             'email.required' => 'Email is required',
             'email.email' => 'Email must be a valid email address',
-            'email.unique' => 'Email must be a unique',
+            'email.unique' => 'Email must be unique',
             'password.required' => 'Password is required',
             'password.min' => 'Password must be at least 8 characters',
-            'photo.mimes' => 'Please upload file in these format only (jpg, jpeg, png)',
-            'photo.max' => 'Image size cannot be more than 2048 bytes'
+            'photo.mimes' => 'Please upload file in these formats only (jpg, jpeg, png)',
+            'photo.max' => 'Image size cannot be more than 2048 bytes',
+            'multiple_addresses.*.address.required' => 'Address is required',
         ];
     }
 }
