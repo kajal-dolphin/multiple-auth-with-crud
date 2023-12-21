@@ -159,31 +159,31 @@
 
 
         //for edit record
-        $(document).on('click','.editData',function (e){
-            e.preventDefault();
-            var edit_id = $(this).attr('data-edit-id');
-            var url = "{{ route('user.edit',':id')}}".replace(':id',edit_id);
+        // $(document).on('click','.editData',function (e){
+        //     e.preventDefault();
+        //     var edit_id = $(this).attr('data-edit-id');
+        //     var url = "{{ route('user.edit',':id')}}".replace(':id',edit_id);
 
-            $.ajax({
-                url : url,
-                type: "GET",
-                data : {
-                    id: edit_id
-                },
-                success: function (res) {
-                    if (res && res.success) {
-                        $('#edit-modal').html(null);
-                        $('#edit-modal').html(res.html);
-                        $('#edit-modal').modal('show');
-                    } else {
-                        console.log('error', res.message);
-                    }
-                },
-                error: function (res) {
-                    console.log('error', res.message);
-                },
-            });
-        });
+        //     $.ajax({
+        //         url : url,
+        //         type: "GET",
+        //         data : {
+        //             id: edit_id
+        //         },
+        //         success: function (res) {
+        //             if (res && res.success) {
+        //                 $('#edit-modal').html(null);
+        //                 $('#edit-modal').html(res.html);
+        //                 $('#edit-modal').modal('show');
+        //             } else {
+        //                 console.log('error', res.message);
+        //             }
+        //         },
+        //         error: function (res) {
+        //             console.log('error', res.message);
+        //         },
+        //     });
+        // });
 
         //for open delete pop up
         $(document).on('click', '.deleteData', function(e) {

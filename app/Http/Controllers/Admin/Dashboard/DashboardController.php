@@ -32,7 +32,7 @@ class DashboardController extends Controller
                             }
                             $editBtn = '';
                             if($activeUser == 'active'){
-                                $editBtn = '<a href="javascript:void(0)" data-edit-id="'.$row->id.'" class="btn btn-primary editData">
+                                $editBtn = '<a href="' . route('user.edit',$row->id) . '" data-edit-id="'.$row->id.'" class="btn btn-primary editData">
                                 <i class="fa fa-edit"></i></a>';
                             }
                             $deleteBtn = '';

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
+use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -79,24 +80,22 @@ class UserController extends Controller
 
     public function edit($id){
         try {
-            $user = User::where('id',$id)->with('address')->first();
-            $userData = array(
-                'data' => $user,
-            );
-            $html = View('admin.user.edit',$userData)->render();
-            return response()->json([
-                'html' => $html,
-                'success' => true,
-            ]);
+            $data = User::where('id',$id)->with('address')->first();
+            return view('admin.user.edit',compact('data'));
+            // $userData = array(
+            //     'data' => $user,
+            // );
+            // $html = View('admin.user.edit',$userData)->render();
+            // return response()->json([
+            //     'html' => $html,
+            //     'success' => true,
+            // ]);
         } catch (\Throwable $e) {
-            return response()->json([
-                'html' => $html,
-                'success' => false,
-            ]);
+            return back()->with('error','Something Went Wrong !!');
         }
     }
 
-    public function update(Request $request){
+    public function update(UserUpdateRequest $request){
         try {
             $user = User::where('id',$request->id)->update([
                 'name' => $request->name,
@@ -136,15 +135,10 @@ class UserController extends Controller
                 }
             }
             
-            return response()->json([
-                'success' => true,
-                'messages' => 'User Updated Successfully'
-            ]);
+            return redirect()->route('admin.dashboard')->with('success','User Updated Successfully !!');
+
         } catch (\Throwable $e) {
-            return response()->json([
-                'success' => false,
-                'messages' => 'User Updation failed'
-            ]);
+            return back()->with('error','Something Went Wrong !!');
         }
     }
 

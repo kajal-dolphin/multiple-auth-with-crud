@@ -49,10 +49,8 @@
                     </div>
                 </div> 
                 <div id="add_more_feild">
-                    @php($i = 1)
-                    @forelse (old('multiple_addresses', []) as $input)
-                        @include('admin.user.clone-column', ['rowIndex' => $i, 'oldAddress' => $input['address']])
-                        @php($i++)
+                    @forelse (old('multiple_addresses', []) as $key => $input) 
+                        @include('admin.user.clone-column', ['rowIndex' => $key++, 'oldAddress' => $input['address'], 'totalItem' => count(old('multiple_addresses', []))])
                     @empty
                         @include('admin.user.clone-column', ['rowIndex' => '1'])
                     @endforelse
@@ -70,55 +68,55 @@
     <script>
         $(document).ready(function (){
 
-            //for validation
-            // $('#userForm').validate({
-            //     rules: {
-            //         name : {
-            //             required : true,
-            //             maxlength : 255,
-            //         },
-            //         email : {
-            //             required : true,
-            //             email : true
-            //         },
-            //         password : {
-            //             required : true,
-            //             minlength : 6
-            //         },
-            //         photo: {
-            //             accept: "image/jpg,image/jpeg,image/png",
-            //         }
-            //     },
-            //     messages : {
-            //         name : {
-            //             required : "Name is Required",
-            //             maxlength : "Name cannot be more than 255 characters"
-            //         },
-            //         email : {
-            //             required : "Email is required",
-            //             email : "Email must be a valid email address"
-            //         },
-            //         password : {
-            //             required : "Password is required",
-            //             minlength : "Password must be at least 6 characters"
-            //         },
-            //         photo : {
-            //             accept: "Please upload file in these format only (jpg, jpeg, png).", 
-            //             max: "Image size cannot be more than 2048 bytes"
-            //         }
-            //     },
-            //     errorElement: 'span',
-            //     errorPlacement: function (error, element) {
-            //         error.addClass('invalid-feedback');
-            //         element.closest('.form-group').append(error);
-            //     },
-            //     highlight: function (element, errorClass, validClass) {
-            //         $(element).addClass('is-invalid');
-            //     },
-            //     unhighlight: function (element, errorClass, validClass) {
-            //         $(element).removeClass('is-invalid');
-            //     }
-            // });
+            // for validation
+            $('#userForm').validate({
+                rules: {
+                    name : {
+                        required : true,
+                        maxlength : 255,
+                    },
+                    email : {
+                        required : true,
+                        email : true
+                    },
+                    password : {
+                        required : true,
+                        minlength : 6
+                    },
+                    photo: {
+                        accept: "image/jpg,image/jpeg,image/png",
+                    }
+                },
+                messages : {
+                    name : {
+                        required : "Name is Required",
+                        maxlength : "Name cannot be more than 255 characters"
+                    },
+                    email : {
+                        required : "Email is required",
+                        email : "Email must be a valid email address"
+                    },
+                    password : {
+                        required : "Password is required",
+                        minlength : "Password must be at least 6 characters"
+                    },
+                    photo : {
+                        accept: "Please upload file in these format only (jpg, jpeg, png).", 
+                        max: "Image size cannot be more than 2048 bytes"
+                    }
+                },
+                errorElement: 'span',
+                errorPlacement: function (error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
+                },
+                highlight: function (element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
+                },
+                unhighlight: function (element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
+            });
 
             //for add new row dynamically
             $(document).on('click','.add_field_button',function (){
@@ -176,14 +174,18 @@
                         $(this).attr('name', 'multiple_addresses[' + cloneIndex + '][' + inputId
                             .slice(0, -1) + ']');
                     });
+                    console.log("itemLength",itemLength);
+                    console.log("cloneIndex",cloneIndex);
 
                     if (itemLength == 2) {
+                        console.log("in if");
                         $('.add_more_' + cloneIndex).show();
                         $('.remove_' + cloneIndex).hide();
                     } else if (cloneIndex + 1 == itemLength) {
-                        // $('.add_more_' + cloneIndex).show();
+                        console.log("in else");
+                        $('.add_more_' + cloneIndex).show();
                         $('.remove_' + cloneIndex).show();
-                    }
+                    } 
                 });
             });
 
