@@ -26,6 +26,7 @@ class UserUpdateRequest extends FormRequest
             'email' => 'required|email',
             'photo'  => 'image|mimes:jpg,png,jpeg',
             'multiple_addresses.*.address' => 'required',
+            'is_default' => 'nullable'
         ];
     }
 

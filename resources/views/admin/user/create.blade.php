@@ -2,71 +2,73 @@
 
 @include('admin.layout.header')
 @section('content')
-    <div class="container pt-5">
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-        <div class="pt-3">
-            <form  action="{{ route('user.store')}}" method="post" id="userForm" enctype="multipart/form-data">
-                @csrf
-                <div class="row">
-                    <div class="mb-3 col-md-6 form-group">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
-                        @error('name')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="mb-3 col-md-6 form-group">
-                        <label for="email" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" value="{{old('email')}}">
-                        @error('email')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="mb-3 col-md-6 form-group">
-                        <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password">
-                        @error('password')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="mb-3 col-md-6 form-group">
-                        <label for="exampleInputPassword1" class="form-label">Image</label>
-                        <input type="file" class="form-control" id="photo" name="photo">
-                        <img src="#" id="preview_img" width="200px" style="display:none;"/> 
-                        @error('photo')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div> 
-                <div id="add_more_feild">
-                    @forelse (old('multiple_addresses', []) as $key => $input) 
-                        @include('admin.user.clone-column', ['rowIndex' => $key++, 'oldAddress' => $input['address'], 'totalItem' => count(old('multiple_addresses', []))])
-                    @empty
-                        @include('admin.user.clone-column', ['rowIndex' => '1'])
-                    @endforelse
-                </div>                
-                <div>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                    <a type="buttton" class="btn btn-danger" href="{{ route('admin.dashboard') }}">Back</a>
-                </div>
-            </form>
-        </div>
+<div class="container pt-5">
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
     </div>
+    @endif
+    <div class="pt-3">
+        <form action="{{ route('user.store')}}" method="post" id="userForm" enctype="multipart/form-data">
+            @csrf
+            <div class="row">
+                <div class="mb-3 col-md-6 form-group">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
+                    @error('name')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3 col-md-6 form-group">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email"
+                        value="{{old('email')}}">
+                    @error('email')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-6 form-group">
+                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                    @error('password')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3 col-md-6 form-group">
+                    <label for="exampleInputPassword1" class="form-label">Image</label>
+                    <input type="file" class="form-control" id="photo" name="photo">
+                    <img src="#" id="preview_img" width="200px" style="display:none;" />
+                    @error('photo')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <div id="add_more_feild">
+                @forelse (old('multiple_addresses', []) as $key => $input)
+                @include('admin.user.clone-column', ['rowIndex' => $key++, 'oldAddress' => $input['address'],
+                'totalItem' => count(old('multiple_addresses', []))])
+                @empty
+                @include('admin.user.clone-column', ['rowIndex' => '1'])
+                @endforelse
+            </div>
+            <div>
+                <button type="submit" class="btn btn-success">Submit</button>
+                <a type="buttton" class="btn btn-danger" href="{{ route('admin.dashboard') }}">Back</a>
+            </div>
+        </form>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
-    <script>
-        $(document).ready(function (){
+<script>
+    $(document).ready(function (){
 
             // for validation
             $('#userForm').validate({
@@ -139,9 +141,11 @@
                             $('#add_more_feild').append(res.html);
                             var numItems = $('.item').length;
                             if (numItems > 0) {
-                                $('.add_more_' + rowIndexValue).css("display", "none");
-                                $('.remove_' + rowIndexValue).css("display", "block");
-                                $('.remove_' + rowIndex).css("display", "block");
+                                console.log("rowIndexValue",rowIndexValue);
+                                console.log("rowIndex",rowIndex);
+                                $('#add_more_' + rowIndexValue).css("display", "none");
+                                $('#remove_' + rowIndexValue).css("display", "block");
+                                $('#remove_' + rowIndex).css("display", "block");
                             }
                             else{
                                 console.log("in else part");
@@ -158,35 +162,32 @@
 
             //for remove row
             $(document).on('click','.remove_field_button', function (){
-                let itemLength = $('.item').length;
+                let itemLength = $('.item').length;               
                 let rowId = $(this).attr('id');
                 let rowIndexId = rowId.split('_');
                 if (rowIndexId.length > 0) {
                     $('#item_' + rowIndexId[1]).remove();
                 }
 
-                $('.item').each(function(index) {
+                $('.item').each(function (index) {
                     var cloneIndex = index + 1;
                     $(this).attr('id', 'item_' + cloneIndex);
-                    $(this).find(':input,textarea').each(function(i) {
+                    $(this).find(':input,textarea').each(function (i) {
                         let inputId = $(this).attr('id').slice(0, -1);
                         $(this).attr('id', inputId + cloneIndex);
-                        $(this).attr('name', 'multiple_addresses[' + cloneIndex + '][' + inputId
-                            .slice(0, -1) + ']');
+                        $(this).attr('name', 'multiple_addresses[' + cloneIndex + '][' + inputId + ']');
                     });
-                    console.log("itemLength",itemLength);
-                    console.log("cloneIndex",cloneIndex);
-
-                    if (itemLength == 2) {
-                        console.log("in if");
-                        $('.add_more_' + cloneIndex).show();
-                        $('.remove_' + cloneIndex).hide();
-                    } else if (cloneIndex + 1 == itemLength) {
-                        console.log("in else");
-                        $('.add_more_' + cloneIndex).show();
-                        $('.remove_' + cloneIndex).show();
-                    } 
                 });
+                var rowIndexNum = rowIndexId[rowIndexId.length-1];
+                // $('div.add_more_btn').attr('id','add_more_btn_' + rowIndexNum);
+
+                if(itemLength == rowIndexNum){
+                    $('#add_more_' + (rowIndexNum-1)).show();
+                    $('#remove_' + (rowIndexNum-1)).show();    
+                }
+                if(itemLength == 2){
+                    $('#remove_' + (itemLength - 1)).hide();
+                }
             });
 
             //for preview image
@@ -199,5 +200,5 @@
                 }
             }
         });
-    </script>
+</script>
 @endsection

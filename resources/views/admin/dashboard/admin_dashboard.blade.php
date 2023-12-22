@@ -121,6 +121,7 @@
                     toastr.options.closeMethod = 'fadeOut';
                     toastr.options.closeDuration = 100;
                     toastr.success(data.message);
+                    table.ajax.reload();
                 }
             });
         });

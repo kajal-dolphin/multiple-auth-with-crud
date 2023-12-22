@@ -9,29 +9,29 @@
         @enderror
     </div>
     <div class="mb-3 col-md-1 form-check pt-5">
-        <input class="form-check-input" type="checkbox" value="1" id="is_default_{{$rowIndex}}" name="multiple_addresses[{{$rowIndex}}][is_default]" 
+        <input class="form-check-input" type="radio" id="is_default_{{$rowIndex}}" name="is_default" value="{{$rowIndex}}"
         @if (old("multiple_addresses.$rowIndex.is_default", isset($oldAddress['is_default']) && $oldAddress['is_default'] == 1)) checked @endif>
         <label class="form-check-label" for="is_default">
             Mark as Default
         </label>
     </div>
     @if(isset($totalItem) &&  $totalItem == $rowIndex)
-        <div class="mb-3 col-md-1 pt-5 add_more_{{$rowIndex}}" style="display: block;">
-            <input type="button" class="btn btn-secondary add_field_button" id="add_more_{{$rowIndex}}" value="Add more">
+        <div class="mb-3 col-md-1 pt-5 add_more_btn" id="add_more_btn_{{$rowIndex}}">
+            <input type="button" class="btn btn-secondary add_field_button"  id="add_more_{{$rowIndex}}" value="Add more" style="display: block;">
         </div>
-        <div class="mb-3 col-md-1 pt-5 remove_{{$rowIndex}}" style="display: block;">
-            <input type="button" class="btn btn-secondary remove_field_button" value="Remove" id="remove_{{$rowIndex}}">
+        <div class="mb-3 col-md-1 pt-5 remove_btn" id="remove_btn_{{$rowIndex}}">
+            <input type="button" class="btn btn-secondary remove_field_button" value="Remove" id="remove_{{$rowIndex}}" style="display: block;">
         </div>
     @elseif(isset($totalItem))
-        <div class="mb-3 col-md-1 pt-5 remove_{{$rowIndex}}" style="display: block;">
-            <input type="button" class="btn btn-secondary remove_field_button" value="Remove" id="remove_{{$rowIndex}}">
+        <div class="mb-3 col-md-1 pt-5 remove_btn" id="remove_btn_{{$rowIndex}}">
+            <input type="button" class="btn btn-secondary remove_field_button" value="Remove" id="remove_{{$rowIndex}}" style="display: block;">
         </div>
     @else
-        <div class="mb-3 col-md-1 pt-5 add_more_{{$rowIndex}}" style="display: block;">
-            <input type="button" class="btn btn-secondary add_field_button" id="add_more_{{$rowIndex}}" value="Add more">
+        <div class="mb-3 col-md-1 pt-5 add_more_btn" id="add_btn_more_{{$rowIndex}}">
+            <input type="button" class="btn btn-secondary add_field_button" id="add_more_{{$rowIndex}}" value="Add more"  style="display: block;">
         </div>
-        <div class="mb-3 col-md-1 pt-5 remove_{{$rowIndex}}" style="display: none;">
-            <input type="button" class="btn btn-secondary remove_field_button" value="Remove" id="remove_{{$rowIndex}}">
+        <div class="mb-3 col-md-1 pt-5 remove_btn" id="remove_btn_{{$rowIndex}}">
+            <input type="button" class="btn btn-secondary remove_field_button" value="Remove" id="remove_{{$rowIndex}}"  style="display: none;">
         </div>
     @endif
 </div>
