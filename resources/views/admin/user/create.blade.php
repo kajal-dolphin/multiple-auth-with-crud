@@ -26,7 +26,7 @@
                 <div class="mb-3 col-md-6 form-group">
                     <label for="email" class="form-label">Email address</label>
                     <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email"
-                        value="{{old('email')}}">
+                        value="{{old('email')}}" multiple>
                     @error('email')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -42,8 +42,8 @@
                 </div>
                 <div class="mb-3 col-md-6 form-group">
                     <label for="exampleInputPassword1" class="form-label">Image</label>
-                    <input type="file" class="form-control" id="photo" name="photo">
-                    <img src="#" id="preview_img" width="200px" style="display:none;" />
+                    <input type="file" class="form-control" id="photo" name="photo[]" multiple>
+                    {{-- <img src="#" id="preview_img" width="200px" style="display:none;" /> --}}
                     @error('photo')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -174,6 +174,7 @@
                     $(this).attr('id', 'item_' + cloneIndex);
                     $(this).find(':input,textarea').each(function (i) {
                         let inputId = $(this).attr('id').slice(0, -1);
+                        // console.log("Input id is",inputId);
                         $(this).attr('id', inputId + cloneIndex);
                         $(this).attr('name', 'multiple_addresses[' + cloneIndex + '][' + inputId + ']');
                     });
@@ -191,14 +192,14 @@
             });
 
             //for preview image
-            photo.onchange = evt => {
-                preview = document.getElementById('preview_img');
-                preview.style.display = 'block';
-                const [file] = photo.files
-                if (file) {
-                    preview.src = URL.createObjectURL(file)
-                }
-            }
+            // photo.onchange = evt => {
+            //     preview = document.getElementById('preview_img');
+            //     preview.style.display = 'block';
+            //     const [file] = photo.files
+            //     if (file) {
+            //         preview.src = URL.createObjectURL(file)
+            //     }
+            // }
         });
 </script>
 @endsection

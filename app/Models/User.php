@@ -50,4 +50,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Address::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(UserImages::class);
+    }
 }

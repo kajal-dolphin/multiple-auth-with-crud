@@ -21,7 +21,7 @@
             <p>{{ \Session::get('danger') }}</p>
         </div><br />
         @endif --}}
-        <div class="container-fluid">
+        <div class="container-fluid pt-5">
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1>User List</h1>

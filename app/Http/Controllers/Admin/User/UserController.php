@@ -2,18 +2,23 @@
 
 namespace App\Http\Controllers\Admin\User;
 
+use App\Helpers\UploadImageHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UserRequest;
 use App\Http\Requests\Admin\UserUpdateRequest;
 use App\Models\Address;
 use App\Models\User;
+use App\Models\UserImages;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use PhpParser\Node\Stmt\TryCatch;
+use App\Traits\UploadImageTrait;
+
 
 class UserController extends Controller
 {
+    use UploadImageTrait;
     public function create(){
         return view('admin.user.create');
     }
@@ -25,19 +30,27 @@ class UserController extends Controller
                 'password' => Hash::make($request->password),
 
             ]);
-    
-            if ($request->photo) {
-                $imageName = time() . '.' . $request->photo->extension();
-            
-                $userFolder = 'public/images/' . $user->id;
-            
-                Storage::putFileAs($userFolder, $request->file('photo'), $imageName);
-            
-                User::where('id', $user->id)->update([
-                    'image' => $imageName,
-                ]);
-            }
 
+            UploadImageHelper::uploadImage($request, 'photo',$user->id);
+
+            // if ($request->photo) {
+            //     $images = $request->file('photo');
+                
+            //     foreach ($images as $file) {
+            //         $imageName = time() . '_' . $file->getClientOriginalName();
+            //         $userFolder = 'public/images/' . $user->id;
+                    
+            //         Storage::putFileAs($userFolder, $file, $imageName);
+            
+            //         UserImages::create([
+            //             'user_id' => $user->id,
+            //             'image' => $imageName
+            //         ]);
+            //     }
+            // }
+            
+            // $this->uploadImage($request, 'photo',$userId = $user->id);
+    
             if ($request->multiple_addresses) {
                 $userAddresses = [];
                 foreach ($request->multiple_addresses as $key => $address) {
@@ -60,7 +73,7 @@ class UserController extends Controller
 
     public function show($id){
         try {
-            $user = User::where('id',$id)->with('address')->first();
+            $user = User::where('id',$id)->with('addresses')->first();
             $userData = array(
                 'data' => $user,
             );
@@ -80,7 +93,7 @@ class UserController extends Controller
 
     public function edit($id){
         try {
-            $data = User::where('id',$id)->with('addresses')->first();
+            $data = User::where('id',$id)->with('addresses','images')->first();
             return view('admin.user.edit',compact('data'));
             // $userData = array(
             //     'data' => $user,
@@ -100,39 +113,26 @@ class UserController extends Controller
             $validatedData = $request->validated();
             $user = User::find($request->id);
             $user->update($validatedData);
-            if($request->photo)
-            {
-                $imageName = time() . '.' . $request->photo->extension();
+
+            // $this->uploadImage($request, 'photo',$userId = $user->id);
+            // $this->deleteExistingImage($request->old_img, $request->id);
+            // UploadImageHelper::uploadImage($request, 'photo',$request->id);
+            // UploadImageHelper::deleteExistingImage($request->old_img, $request->id);
+
+            if ($request->multiple_addresses) {
+                foreach ($request->multiple_addresses as $key => $address) {
+                    $updateData = [
+                        'user_id' => $user->id,
+                        'address' => $address['address'],
+                        'is_default' => isset($request->is_default) && $request->is_default == $key ? '1' : 0,
+                    ];
             
-                $userFolder = 'public/images/' . $user->id;
-                if (!file_exists($userFolder)) {
-                    mkdir($userFolder, 0777, true);
-                }
-
-                Storage::putFileAs($userFolder, $request->file('photo'), $imageName);
-        
-                User::where('id',$request->id)->update([
-                    'image' => $imageName,
-                ]);
-
-                if($request->old_img){
-                    $imagePath = 'storage/images/' . '/' . $request->id . '/' . $request->old_img;
-                    if (file_exists($imagePath)) {
-                        unlink($imagePath);
-                    }
-                }   
+                    $addressId = $address['address_id'] ?? null;
+            
+                    Address::updateOrCreate(['id' => $addressId], $updateData);
+                }  
             }
-            // if($request->multiple_addresses){
-            //     $address = Address::where('user_id',$request->id)->delete();
-            //     foreach($request->multiple_addresses as $address){
-            //         Address::create([
-            //             'user_id' => $request->id,
-            //             'address' => $address['address'],
-            //             'is_default' => isset($address['is_default']) ? '1' : '0',
-            //         ]);
-            //     }
-            // }
-            
+             
             return redirect()->route('admin.dashboard')->with('success','User Updated Successfully !!');
 
         } catch (\Throwable $e) {
@@ -146,7 +146,7 @@ class UserController extends Controller
             User::where('id',$id)->delete();
             Address::where('user_id',$id)->delete();
 
-            $imagePath = public_path('images') . '/' . $id . '/' . $user->image;
+            $imagePath = 'storage/images/' . '/' . $id . '/' . $user->image;
 
             if (file_exists($imagePath)) {
                 unlink($imagePath);

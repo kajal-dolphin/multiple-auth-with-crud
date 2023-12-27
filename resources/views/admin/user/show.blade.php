@@ -20,12 +20,12 @@
                 <div class="mb-3 form-group">
                     <label for="photo" class="form-label">Image :- </label>
                     <div>
-                        <img src="{{ asset('images/' . $data->id . '/' . $data->image)}}" width="200px" class="pt-2" id="old_img">
+                        <img src="{{ asset('storage/images/' . $data->id . '/' . $data->image)}}" width="200px" class="pt-2" id="old_img">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="photo" class="form-label">Address :- </label>
-                    @foreach($data->address as $key => $address)
+                    @foreach($data->addresses as $key => $address)
                         @if($address->is_default == 1)
                             <div class="row">
                                 <div class="mb-3 col-md-11 form-group">
