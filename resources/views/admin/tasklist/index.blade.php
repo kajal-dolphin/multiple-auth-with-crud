@@ -4,31 +4,21 @@
 
 </div>
 <div class="modal fade" id="show-modal" style="display: none;" aria-hidden="true">
-
+    
 </div>
 
 @section('content')
 <div class="content-wrapper bg-light text-dark">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        {{-- @if (\Session::has('success'))
-        <div class="alert alert-success fade-message">
-            <p>{{ \Session::get('success') }}</p>
-        </div><br />
-        @endif --}}
-        {{-- @if (\Session::has('error'))
-        <div class="alert alert-danger fade-message">
-            <p>{{ \Session::get('danger') }}</p>
-        </div><br />
-        @endif --}}
         <div class="container-fluid pt-3">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>User List</h1>
+                    <h1>Task List</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <a href="{{ route('user.create') }}" class="btn btn-primary"> Add User +</a>
+                        <a href="{{ route('tasklist.create') }}" class="btn btn-primary"> Add Task + </a>
                     </ol>
                 </div>
             </div>
@@ -40,16 +30,33 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">User List</h3>
+                            <div class="d-flex bd-highlight">
+                                <div class="p-2 flex-grow-1 bd-highlight">
+                                    <h3>Task List</h3>
+                                </div>
+                                <div class="p-2 bd-highlight">
+                                    <label><strong>Status :</strong></label>
+                                    <select id='status' class="form-control" style="width: 200px">
+                                        <option value="">--Select Status--</option>
+                                        <option value="new">New</option>
+                                        <option value="incomplete">Incomplete</option>
+                                        <option value="complete">Complete</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body">
                             <table class="table table-bordered data-table">
                                 <thead>
                                     <tr>
                                         <th style="width: 20px">No</th>
-                                        <th style="width: 50px">Name</th>
-                                        <th style="width: 40px">Email</th>
-                                        <th style="width: 20px">Status</th>
+                                        <th style="width: 50px">Subject</th>
+                                        <th style="width: 40px">Description</th>
+                                        <th style="width: 20px">Start Date</th>
+                                        <th style="width: 20px">End Date</th>
+                                        <th style="width: 40px">Status</th>
+                                        <th style="width: 40px">Priority</th>
+                                        <th style="width: 40px">Is_Active</th>
                                         <th width="100px">Action</th>
                                     </tr>
                                 </thead>
@@ -90,12 +97,22 @@
             processing: true,
             serverSide: true,
             responsive:true,
-            ajax: "{{ route('admin.dashboard') }}",
+            ajax: {
+                url: "{{ route('tasklist.index') }}",
+                data: function (d) {
+                    d.status = $('#status').val(),
+                    d.search = $('input[type="search"]').val()
+                }
+            },
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'name', name: 'name'},
-                {data: 'email', name: 'email'},
-                { data: 'status',name:'status',orderable:false,searchable:false },
+                {data: 'subject', name: 'subject'},
+                {data: 'description', name: 'description'},
+                {data: 'start_date', name: 'start_date'},
+                {data: 'end_date', name: 'end_date'},
+                {data: 'status', name: 'status'},
+                {data: 'priority', name: 'priority'},
+                {data: 'is_active',name:'is_active',orderable:false,searchable:false },
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
             "drawCallback": function(settings) {
@@ -106,35 +123,14 @@
             }
         });
 
-        //for change status
-        $('.data-table').on('change', '.status', function () {
-            var status = $(this).prop('checked') ? 1 : 0;
-            var user_id = $(this).data('id'); 
-            
-            $.ajax({
-                type: "GET",
-                dataType: "json",
-                url: '/change-status',
-                data: {'status': status, 'user_id': user_id},
-                success: function (data) {
-                    toastr.options.closeButton = true;
-                    toastr.options.closeMethod = 'fadeOut';
-                    toastr.options.closeDuration = 100;
-                    toastr.success(data.message);
-                    table.ajax.reload();
-                }
-            });
+        $('#status').change(function(){
+            table.draw();
         });
-
-        //for settimeout for success message
-        setTimeout(function() {
-            $('.fade-message').slideUp();
-        }, 3000);
 
         //for view record
         $(document).on('click','.viewData', function (){
             let view_id = $(this).attr('data-view-id');
-            let url = "{{ route('user.show',':id') }}".replace(':id',view_id);
+            let url = "{{ route('taskList.show',':id') }}".replace(':id',view_id);
 
             $.ajax({
                 url : url,
@@ -157,36 +153,8 @@
             });
         });
 
-
-        //for edit record
-        // $(document).on('click','.editData',function (e){
-        //     e.preventDefault();
-        //     var edit_id = $(this).attr('data-edit-id');
-        //     var url = "{{ route('user.edit',':id')}}".replace(':id',edit_id);
-
-        //     $.ajax({
-        //         url : url,
-        //         type: "GET",
-        //         data : {
-        //             id: edit_id
-        //         },
-        //         success: function (res) {
-        //             if (res && res.success) {
-        //                 $('#edit-modal').html(null);
-        //                 $('#edit-modal').html(res.html);
-        //                 $('#edit-modal').modal('show');
-        //             } else {
-        //                 console.log('error', res.message);
-        //             }
-        //         },
-        //         error: function (res) {
-        //             console.log('error', res.message);
-        //         },
-        //     });
-        // });
-
-        //for open delete pop up
-        $(document).on('click', '.deleteData', function(e) {
+         //for open delete pop up
+         $(document).on('click', '.deleteData', function(e) {
             let delete_id = $(this).attr("data-delete-id");
             $('.delete_record').val(delete_id);
             $('#deleteModal').modal('show');
@@ -195,7 +163,7 @@
         //for delete record
         $(document).on('click','.confirmDelete', function(e){
             let delete_id = $('.delete_record').val();
-            let url = "{{ route('user.delete', '') }}/" + delete_id;
+            let url = "{{ route('tasklist.delete', '') }}/" + delete_id;
             $.ajax({
                 url : url,
                 type : "GET",
@@ -208,6 +176,28 @@
                 }
             })
         });
+
+        //for change status
+        $('.data-table').on('change', '.is_active', function () {
+            var is_active = $(this).prop('checked') ? 1 : 0;
+            var user_id = $(this).data('id'); 
+            
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: '/change-task-status',
+                data: {'is_active': is_active, 'user_id': user_id},
+                success: function (data) {
+                    toastr.options.closeButton = true;
+                    toastr.options.closeMethod = 'fadeOut';
+                    toastr.options.closeDuration = 100;
+                    toastr.success(data.message);
+                    table.ajax.reload();
+                }
+            });
+        });
+
+
     });
 </script>
 @endsection

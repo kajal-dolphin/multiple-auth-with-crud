@@ -43,6 +43,7 @@
                 <div class="mb-3 col-md-6 form-group">
                     <label for="exampleInputPassword1" class="form-label">Image</label>
                     <input type="file" class="form-control" id="photo" name="photo[]" multiple>
+                    <span class="images-preview-div"> </span>
                     {{-- <img src="#" id="preview_img" width="200px" style="display:none;" /> --}}
                     @error('photo')
                     <div class="text-danger">{{ $message }}</div>
@@ -85,7 +86,7 @@
                         required : true,
                         minlength : 6
                     },
-                    photo: {
+                    "photo[]": {
                         accept: "image/jpg,image/jpeg,image/png",
                     }
                 },
@@ -200,6 +201,28 @@
             //         preview.src = URL.createObjectURL(file)
             //     }
             // }
+            
+            // for preview mutiple image
+            // var previewImages = function(input, imgPreviewPlaceholder) {
+
+            //     if (input.files) {
+            //         var filesAmount = input.files.length;
+
+            //         for (i = 0; i < filesAmount; i++) {
+            //             var reader = new FileReader();
+
+            //             reader.onload = function(event) {
+            //                 $($.parseHTML('<img>')).attr('src', event.target.result).css({'width': '100px', 'height': '100px', 'margin' : '2px', 'border' : '1px s'}).appendTo(imgPreviewPlaceholder);
+            //             }
+
+            //             reader.readAsDataURL(input.files[i]);
+            //         }
+            //     }
+            // };
+
+            // $('#photo').on('change', function() {
+            //     previewImages(this, 'span.images-preview-div');
+            // });
         });
 </script>
 @endsection

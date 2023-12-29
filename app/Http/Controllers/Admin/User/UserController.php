@@ -119,6 +119,8 @@ class UserController extends Controller
             // UploadImageHelper::uploadImage($request, 'photo',$request->id);
             // UploadImageHelper::deleteExistingImage($request->old_img, $request->id);
 
+            UploadImageHelper::uploadImage($request, 'photo',$user->id);
+
             if ($request->multiple_addresses) {
                 foreach ($request->multiple_addresses as $key => $address) {
                     $updateData = [
@@ -156,6 +158,30 @@ class UserController extends Controller
                 'success' => true,
                 'message' => "User Deleted Successfullly !!"
             ],200);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => "Something Went Wrong !!"
+            ],200);
+        }
+    }
+
+    public function deleteImage($id){
+        try {
+            $img = UserImages::find($id);
+            $deleteImg = UserImages::find($id)->delete();
+
+            $imagePath = 'storage/images/' . '/' . $img->user_id . '/' . $img->image;
+
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => "Image Deleted Successfullly !!"
+            ],200);
+
         } catch (\Throwable $e) {
             return response()->json([
                 'success' => false,

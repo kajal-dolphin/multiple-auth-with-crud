@@ -19,7 +19,7 @@ class LoginController extends Controller
             'password' => $request->password,
         ];
         
-        if (Auth::guard('admin')->attempt($userData)) {
+        if (Auth::guard('admin')->attempt($userData) || Auth::guard('user')->attempt($userData)) {
             return redirect()->route('admin.dashboard')->with('success','login successfully !!');
         }
         return redirect()->route('admin.show.login.page')->with('error', 'Sorry !! Your Credentials Is Not Matched !!');

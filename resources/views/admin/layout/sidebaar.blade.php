@@ -43,6 +43,15 @@
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    @if(Auth::guard('user')->check())
+                        <a href="{{ route('tasklist.index')}}" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Task List
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    @endif
                     {{-- <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a class="nav-link active" href="">

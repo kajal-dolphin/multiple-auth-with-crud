@@ -35,12 +35,18 @@
                 <div class="row">
                     <div class="mb-3 col-md-6 form-group">
                         <label for="photo" class="form-label">Image :- </label>
-                        <input type="file" class="form-control" id="photo" name="photo">
+                        <input type="file" class="form-control" id="photo" name="photo[]" multiple>
                         {{-- <input type="hidden" name="old_img" value={{ $data->image}}> --}}
-                        @foreach($data->images as $key => $img)
-                            <img src="{{ asset('storage/images/' . $img->user_id . '/' . $img->image)}}" width="100px" class="pt-2 m-2" id="old_img">
-                        @endforeach
-                        <img src="#" id="preview_img" width="200px" style="display:none;" name="new_img" class="pt-2"/> 
+                        <div class="image-container">
+                            @foreach($data->images as $key => $img)
+                                <div class="image-wrapper position-relative" id="deletedImage_{{ $img->id }}">
+                                    <img src="{{ asset('storage/images/' . $img->user_id . '/' . $img->image)}}" width="100px" class="pt-2 m-2 imageView" id="old_img">
+                                    <button type="button" class="close-btn deleteImage" data-image-id="{{ $img->id }}"><span>&times;</span></button>
+                                </div>
+                            @endforeach
+                            <span class="images-preview-div"></span>
+                        </div>
+                        {{-- <img src="#" id="preview_img" width="200px" style="display:none;" name="new_img" class="pt-2"/>  --}}
                     </div>
                 </div> 
                 @if(empty(old('multiple_addresses', [])))
@@ -212,16 +218,56 @@
             });
             
             //for preview image
-            photo.onchange = evt => {
-                preview = document.getElementById('preview_img');
-                oldImage = document.getElementById('old_img');
-                oldImage.style.display = 'none';
-                preview.style.display = 'block';
-                const [file] = photo.files
-                if (file) {
-                    preview.src = URL.createObjectURL(file)
-                }
-            }
+            // photo.onchange = evt => {
+            //     preview = document.getElementById('preview_img');
+            //     oldImage = document.getElementById('old_img');
+            //     oldImage.style.display = 'none';
+            //     preview.style.display = 'block';
+            //     const [file] = photo.files
+            //     if (file) {
+            //         preview.src = URL.createObjectURL(file)
+            //     }
+            // }
+
+              // for preview mutiple image
+            // var previewImages = function(input, imgPreviewPlaceholder) {
+            //     if (input.files) {
+            //         var filesAmount = input.files.length;
+
+            //         for (i = 0; i < filesAmount; i++) {
+            //             var reader = new FileReader();
+            //             reader.onload = function(e) {
+            //                 $($.parseHTML('<img>')).attr('src', event.target.result).css({'width': '100px', 'height': '100px', 'margin' : '2px', 'padding-top' : '2px'}).appendTo(imgPreviewPlaceholder);
+            //             }
+            //             reader.readAsDataURL(input.files[i]);
+            //         }
+            //     }
+            // };
+
+            // $('#photo').on('change', function() {
+            //     previewImages(this, 'span.images-preview-div');
+            // });
+
+            //for delete image 
+            $('.deleteImage').on('click',function (){
+                let imageId = $(this).attr('data-image-id');
+                let url = "{{ route('user.delete.image',':id') }}".replace(':id',imageId);
+                console.log(url);
+                $.ajax({
+                    url : url,
+                    type : "GET",
+                    data : {
+                        id: imageId
+                    },
+                    success : function(res) {
+                        $('#deletedImage_'+imageId).remove();
+                        console.log('success', res.message);
+                    },
+                    error: function (res) {
+                        console.log('error', res.message);
+                    },
+                });
+            })
         });
     </script>
 @endsection

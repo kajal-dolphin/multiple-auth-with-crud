@@ -18,7 +18,7 @@
 
             <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
-        @if(Auth::user())
+        @if(Auth::guard('user')->check())
             <a class="btn-getstarted" href="{{ route('user.logout')}}">Logout</a>
         @else
             <a class="btn-getstarted" href="{{ route('user.show.login.page')}}">Login Here</a>

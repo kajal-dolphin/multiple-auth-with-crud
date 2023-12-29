@@ -11,9 +11,9 @@ use Yajra\DataTables\Facades\DataTables;
 class DashboardController extends Controller
 {
     public function showAdminDashboard(Request $request){
-        if(Auth::guard('admin')->check()){
+        if(Auth::guard('admin')->check() || Auth::guard('user')->check()){
             if ($request->ajax()) {
-                $data = User::select('*');
+                $data = Auth::guard('admin')->check() ? User::select('*') : User::where('id',Auth::guard('user')->id());
                 return DataTables::of($data)
                         ->addIndexColumn()
                         ->addColumn ('status',function($row){
