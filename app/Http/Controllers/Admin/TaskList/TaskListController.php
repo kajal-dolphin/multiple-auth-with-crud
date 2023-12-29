@@ -29,13 +29,13 @@ class TaskListController extends Controller
                             if ($request->get('status') == 'new' || $request->get('status') == 'incomplete' || $request->get('status') == 'complete') {
                                 $instance->where('status', $request->get('status'));
                             }
-                            if (!empty($request->get('search'))) {
-                                 $instance->where(function($w) use($request){
-                                    $search = $request->get('search');
-                                    $w->orWhere('name', 'LIKE', "%$search%")
-                                    ->orWhere('email', 'LIKE', "%$search%");
-                                });
-                            }
+                            // if (!empty($request->get('search'))) {
+                            //      $instance->where(function($w) use($request){
+                            //         $search = $request->get('search');
+                            //         $w->orWhere('name', 'LIKE', "%$search%")
+                            //         ->orWhere('email', 'LIKE', "%$search%");
+                            //     });
+                            // }
                         })
                         ->editColumn('start_date', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->start_date)->format('d-m-Y'); 
                             return $formatedDate; })
