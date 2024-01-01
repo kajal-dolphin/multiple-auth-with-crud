@@ -34,10 +34,10 @@
                                 <div class="p-2 flex-grow-1 bd-highlight">
                                     <h3>Task List</h3>
                                 </div>
-                                <div class="p-2 bd-highlight">
-                                    <label><strong>Status :</strong></label>
-                                    <select id='status' class="form-control" style="width: 200px">
-                                        <option value="">--Select Status--</option>
+                                <div class="p-2 bd-highlight my-status">
+                                    <p class="me-2 mt-1">Status : </p>
+                                    <select id='status' class="form-control" style="width: 150px">
+                                        <option value="">- Select Status -</option>
                                         <option value="new">New</option>
                                         <option value="incomplete">Incomplete</option>
                                         <option value="complete">Complete</option>
@@ -45,19 +45,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <table class="table table-bordered data-table">
+                        <div class="card-body my-index">
+                            <table class="table table-bordered data-table my-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 20px">No</th>
-                                        <th style="width: 50px">Subject</th>
-                                        <th style="width: 40px">Description</th>
-                                        <th style="width: 20px">Start Date</th>
-                                        <th style="width: 20px">End Date</th>
-                                        <th style="width: 40px">Status</th>
-                                        <th style="width: 40px">Priority</th>
-                                        <th style="width: 40px">Is_Active</th>
-                                        <th width="100px">Action</th>
+                                        <th style="width: 20px" class="no">No</th>
+                                        <th style="width: 50px" class="subject">Subject</th>
+                                        <th style="width: 40px" class="description">Description</th>
+                                        <th style="width: 20px" class="start_date">Start Date</th>
+                                        <th style="width: 20px" class="end_date">End Date</th>
+                                        <th style="width: 40px" class="status">Status</th>
+                                        <th style="width: 40px" class="priority">Priority</th>
+                                        <th style="width: 40px" class="is_active">Is_Active</th>
+                                        <th width="100px" class="action">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -120,6 +120,16 @@
                 elems.forEach(function(html) {
                     let switchery = new Switchery(html, { size: 'small' });
                 });
+            },
+            createdRow: function ( row ) {
+                $('td', row).eq(0).addClass('no');
+                $('td', row).eq(1).addClass('subject');
+                $('td', row).eq(2).addClass('description');
+                $('td', row).eq(3).addClass('start_date');
+                $('td', row).eq(4).addClass('end_date');
+                $('td', row).eq(5).addClass('status');
+                $('td', row).eq(6).addClass('priority');
+                $('td', row).eq(7).addClass('is_active');
             }
         });
 

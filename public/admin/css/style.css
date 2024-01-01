@@ -1,0 +1,62 @@
+.image-container {
+    display: flex;
+}
+
+.image-wrapper {
+    position: relative;
+    margin-right: 10px; 
+}
+
+.close-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.my-status {
+    position: absolute;
+    right: 285px;
+    top: 91px;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    .my-status {
+        position: absolute;
+        right: 3rem;
+        top: 8rem;
+        display: flex;
+        z-index: 10;
+    }
+    .my-index .dataTables_filter {
+        margin-top: 2.5rem;
+    }
+    .my-index .description, .my-index .start_date, .my-index .end_date, .my-index .status, .my-index .priority, .my-index .is_active{
+        display: none;
+    }
+}
+
+@media only screen and (min-device-width: 480px) and (max-device-width: 768px) {
+
+    .my-status {
+        position: absolute;
+        right: 14rem;
+        top: 8rem;
+        display: flex;
+        z-index: 10;
+    }
+    .my-index .dataTables_filter {
+        margin-left: 10rem;
+    }
+    .my-index .description, .my-index .status, .my-index .priority, .my-index .is_active{
+        display: none;
+    }
+}
+
+
+
