@@ -34,19 +34,10 @@
                                 <div class="p-2 flex-grow-1 bd-highlight">
                                     <h3>Task List</h3>
                                 </div>
-                                <div class="p-2 bd-highlight my-status">
-                                    <p class="me-2 mt-1">Status : </p>
-                                    <select id='status' class="form-control" style="width: 150px">
-                                        <option value="">- Select Status -</option>
-                                        <option value="new">New</option>
-                                        <option value="incomplete">Incomplete</option>
-                                        <option value="complete">Complete</option>
-                                    </select>
-                                </div>
                             </div>
                         </div>
-                        <div class="card-body my-index">
-                            <table class="table table-bordered data-table my-table">
+                        <div class="card-body">
+                            <table class="table table-bordered data-table">
                                 <thead>
                                     <tr>
                                         <th style="width: 20px" class="no">No</th>
@@ -97,6 +88,8 @@
             processing: true,
             serverSide: true,
             responsive:true,
+            // "searching": false, 
+            "bPaginate": false,
             ajax: {
                 url: "{{ route('tasklist.index') }}",
                 data: function (d) {
@@ -115,25 +108,103 @@
                 {data: 'is_active',name:'is_active',orderable:false,searchable:false },
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ],
+            initComplete: function () {
+                var newDiv = $("<div>");
+                newDiv.addClass("datatable_custom_class row");
+                $(".dataTables_wrapper .row:first > div:first-child").addClass("col-lg-6 col-xl-6 col-xxl-6");
+                $(".dataTables_wrapper .row:first > div:eq(1)").addClass("col-lg-6 col-xl-6 col-xxl-6");
+                $(".dataTables_wrapper .row:first > div:first-child").append(newDiv);
+                $(".dataTables_wrapper .row:first > div:eq(1) .dataTables_filter").addClass("row");
+                $(".dataTables_wrapper .row:first > div:eq(1) .dataTables_filter").find( "label").addClass("serachInput");
+                
+                var addDiv = '<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4 pt-2" id="divContainer"></div>';
+
+                $('.dataTables_wrapper .row:first > div:eq(1) .dataTables_filter').append(addDiv);
+                $('.dataTables_wrapper .row:first > div:eq(1) .dataTables_filter .serachInput').appendTo('#divContainer');
+                
+                var statusDropdown = 
+                    '<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">' +
+                        '<div class="d-flex flex-row bd-highlight">' + 
+                            '<div class="p-2 bd-highlight">' +
+                                '<p class="pt-1"> Status </p>' +
+                            '</div>' +
+                            '<div class="p-2 bd-highlight">' +
+                                '<select id="status" class="form-control">' +
+                                    '<option value="">- Select Status -</option>' +
+                                    '<option value="new">New</option>' +
+                                    '<option value="incomplete">Incomplete</option>' +
+                                    '<option value="complete">Complete</option>' +
+                                '</select>' + 
+                            '</div>' +
+                        '</div>'                       
+                    '</div>'
+                $('.datatable_custom_class').append(statusDropdown);
+
+                var priorityDropdown = 
+                    '<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">' +
+                        '<div class="d-flex flex-row bd-highlight">' + 
+                            '<div class="p-2 bd-highlight">' +
+                                '<p class="pt-1"> Priority </p>' +
+                            '</div>' +
+                            '<div class="p-2 bd-highlight">' +
+                                '<select id="priority" class="form-control">' +
+                                    '<option value="">- Select Priority -</option>' +
+                                    '<option value="high">High</option>' +
+                                    '<option value="meduim">Meduim</option>' +
+                                    '<option value="low">Low</option>' +
+                                '</select>' +
+                            '</div>' +
+                        '</div>'                       
+                    '</div>'
+                $('.datatable_custom_class').append(priorityDropdown);
+
+                var endDatePicker = 
+                    '<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">' +
+                        '<div class="d-flex flex-row bd-highlight">' + 
+                            '<div class="p-2 bd-highlight">' +
+                                '<p class="pt-1"> End Date </p>' +
+                            '</div>' +
+                            '<div class="p-2 bd-highlight">' +
+                                '<input type="date" class="form-control" id="end_date" name="end_date">' +
+                            '</div>' +
+                        '</div>'                       
+                    '</div>'
+                $('.dataTables_filter').prepend(endDatePicker);
+
+                var startDatePicker = 
+                    '<div class="col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">' +
+                        '<div class="d-flex flex-row bd-highlight">' + 
+                            '<div class="p-2 bd-highlight">' +
+                                '<p class="pt-1"> Start Date </p>' +
+                            '</div>' +
+                            '<div class="p-2 bd-highlight">' +
+                                '<input type="date" class="form-control" id="start_date" name="start_date">' +
+                            '</div>' +
+                        '</div>'                       
+                    '</div>'
+                $('.datatable_custom_class').append(startDatePicker);
+            },
             "drawCallback": function(settings) {
                 let elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
                 elems.forEach(function(html) {
                     let switchery = new Switchery(html, { size: 'small' });
                 });
             },
-            createdRow: function ( row ) {
-                $('td', row).eq(0).addClass('no');
-                $('td', row).eq(1).addClass('subject');
-                $('td', row).eq(2).addClass('description');
-                $('td', row).eq(3).addClass('start_date');
-                $('td', row).eq(4).addClass('end_date');
-                $('td', row).eq(5).addClass('status');
-                $('td', row).eq(6).addClass('priority');
-                $('td', row).eq(7).addClass('is_active');
-            }
+
+            // createdRow: function ( row ) {
+            //     $('td', row).eq(0).addClass('no');
+            //     $('td', row).eq(1).addClass('subject');
+            //     $('td', row).eq(2).addClass('description');
+            //     $('td', row).eq(3).addClass('start_date');
+            //     $('td', row).eq(4).addClass('end_date');
+            //     $('td', row).eq(5).addClass('status');
+            //     $('td', row).eq(6).addClass('priority');
+            //     $('td', row).eq(7).addClass('is_active');
+            // },
         });
 
         $('#status').change(function(){
+            console.log("here");
             table.draw();
         });
 
@@ -206,8 +277,6 @@
                 }
             });
         });
-
-
     });
 </script>
 @endsection

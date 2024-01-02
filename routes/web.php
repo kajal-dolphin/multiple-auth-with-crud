@@ -46,7 +46,6 @@ Route::prefix('user')->group(function (){
 });
 
 //Route for create new user 
-
 Route::get('/create-user',[UserController::class,'create'])->name('user.create');
 Route::post('/store-user',[UserController::class,'store'])->name('user.store');
 Route::get('/show-user/{id}',[UserController::class,'show'])->name('user.show');
@@ -59,7 +58,6 @@ Route::post('/clone-column',[UserController::class,'cloneColumn'])->name('user.c
 
 
 //Route for add task module
-
 Route::get('/task-list',[TaskListController::class,'index'])->name('tasklist.index');
 Route::get('/create-task',[TaskListController::class,'create'])->name('tasklist.create');
 Route::post('/store-task',[TaskListController::class,'store'])->name('tasklist.store');

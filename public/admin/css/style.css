@@ -25,24 +25,24 @@
     z-index: 10;
 }
 
-@media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+@media only screen and (min-device-width: 370px) and (max-device-width: 480px) {
     .my-status {
         position: absolute;
         right: 3rem;
         top: 8rem;
+        text-align: center;
         display: flex;
         z-index: 10;
     }
     .my-index .dataTables_filter {
         margin-top: 2.5rem;
     }
-    .my-index .description, .my-index .start_date, .my-index .end_date, .my-index .status, .my-index .priority, .my-index .is_active{
+    /* .my-index .description, .my-index .start_date, .my-index .end_date, .my-index .status, .my-index .priority, .my-index .is_active{
         display: none;
-    }
+    } */
 }
 
 @media only screen and (min-device-width: 480px) and (max-device-width: 768px) {
-
     .my-status {
         position: absolute;
         right: 14rem;
@@ -57,6 +57,8 @@
         display: none;
     }
 }
+
+
 
 
 
