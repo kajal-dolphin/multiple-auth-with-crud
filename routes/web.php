@@ -55,6 +55,7 @@ Route::get('/delete-user/{id}',[UserController::class,'delete'])->name('user.del
 Route::get('/delete-image/{id}',[UserController::class,'deleteImage'])->name('user.delete.image');
 Route::get('/change-status',[DashboardController::class,'changeStatus'])->name('user.change.status');
 Route::post('/clone-column',[UserController::class,'cloneColumn'])->name('user.clone.column');
+Route::get('/get-user-data/{id}',[UserController::class,'getUserData'])->name('user.get.user.data');
 
 
 //Route for add task module
@@ -66,3 +67,4 @@ Route::get('/edit-tasklist/{id}',[TaskListController::class,'edit'])->name('task
 Route::post('/update-task',[TaskListController::class,'update'])->name('tasklist.update');
 Route::get('/delete-task/{id}',[TaskListController::class,'delete'])->name('tasklist.delete');
 Route::get('/change-task-status',[TaskListController::class,'changeStatus'])->name('tasklist.change.status');
+

@@ -203,4 +203,9 @@ class UserController extends Controller
             ]);
         }
     }
+
+    public function getUserData($id)
+    {
+        dd($id);
+    }
 }
