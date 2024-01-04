@@ -206,6 +206,11 @@ class UserController extends Controller
 
     public function getUserData($id)
     {
-        dd($id);
+        try {
+            $userDetail = User::where('id',$id)->with('addresses','images')->first();
+            return view('admin.user.show-user-detail',compact('userDetail'));
+        } catch (\Throwable $e) {
+            return back()->with('error','Something Went Wrong !!');
+        }
     }
 }
