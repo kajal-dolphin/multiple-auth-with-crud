@@ -73,7 +73,7 @@ class UserController extends Controller
 
     public function show($id){
         try {
-            $user = User::where('id',$id)->with('addresses')->first();
+            $user = User::findUesr($id)->with('addresses')->first();
             $userData = array(
                 'data' => $user,
             );
@@ -93,7 +93,7 @@ class UserController extends Controller
 
     public function edit($id){
         try {
-            $data = User::where('id',$id)->with('addresses','images')->first();
+            $data = User::findUesr($id)->with('addresses','images')->first();
             return view('admin.user.edit',compact('data'));
             // $userData = array(
             //     'data' => $user,
@@ -144,8 +144,8 @@ class UserController extends Controller
 
     public function delete($id){
         try {
-            $user = User::where('id',$id)->first();
-            User::where('id',$id)->delete();
+            $user = User::findUesr($id)->first();
+            User::findUesr($id)->delete();
             Address::where('user_id',$id)->delete();
 
             $imagePath = 'storage/images/' . '/' . $id . '/' . $user->image;
@@ -207,7 +207,7 @@ class UserController extends Controller
     public function getUserData($id)
     {
         try {
-            $userDetail = User::where('id',$id)->with('addresses','images')->first();
+            $userDetail = User::findUesr($id)->with('addresses','images')->first();
             return view('admin.user.show-user-detail',compact('userDetail'));
         } catch (\Throwable $e) {
             return back()->with('error','Something Went Wrong !!');

@@ -30,10 +30,10 @@ class TaskListController extends Controller
                                 $instance->where('status', $request->get('status'));
                             }
                         })
-                        ->editColumn('start_date', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->start_date)->format('d-m-Y'); 
-                            return $formatedDate; })
-                        ->editColumn('end_date', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->start_date)->format('d-m-Y'); 
-                            return $formatedDate; })
+                        // ->editColumn('start_date', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->start_date)->format('d-m-Y'); 
+                        //     return $formatedDate; })
+                        // ->editColumn('end_date', function($data){ $formatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $data->start_date)->format('d-m-Y'); 
+                        //     return $formatedDate; })
                         ->addColumn('action', function($row){
                             $activeUser = $row->is_active == '1' ? 'active' : '';
                             $viewBtn = '';
@@ -70,7 +70,7 @@ class TaskListController extends Controller
     public function store(TaskListRequest $request)
     {
         try {
-            TaskList::create([
+            $taskList = TaskList::create([
                 'user_id' => Auth::guard('user')->id(),
                 'subject' => $request->subject,
                 'description' => $request->description,
@@ -90,7 +90,7 @@ class TaskListController extends Controller
 
     public function show($id){
         try {
-            $taskList = TaskList::where('id',$id)->first();
+            $taskList = TaskList::findTask($id)->first();
             $taskData = array(
                 'data' => $taskList,
                 'startDate' => Carbon::createFromFormat('Y-m-d H:i:s', $taskList->start_date)->format('d-m-Y'),
@@ -112,7 +112,7 @@ class TaskListController extends Controller
 
     public function edit($id){
         try {
-            $taskList = TaskList::where('id',$id)->first();
+            $taskList = TaskList::findTask($id)->first();
             return view('admin.tasklist.edit',compact('taskList'));
         } catch (\Throwable $e) {
             return back()->with('error','Something Went Wrong !!');
@@ -135,7 +135,7 @@ class TaskListController extends Controller
 
     public function delete($id){
         try {
-            $taskList = TaskList::where('id',$id)->delete();
+            $taskList = TaskList::findTask($id)->delete();
             return response()->json([
                 'success' => true,
                 'message' => "Task Deleted Successfullly !!"

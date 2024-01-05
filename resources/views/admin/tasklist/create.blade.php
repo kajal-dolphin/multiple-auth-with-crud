@@ -13,7 +13,7 @@
     </div>
     @endif
     <div class="pt-3">
-        <form action="{{ route('tasklist.update')}}" method="post" id="taskListForm">
+        <form action="{{ route('tasklist.store')}}" method="post" id="taskListForm">
             @csrf
             <div class="row">
                 <div class="mb-3 col-md-12 form-group">

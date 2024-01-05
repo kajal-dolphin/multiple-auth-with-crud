@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserImages::class);
     }
+
+    public function scopeFindUesr($query , $id)
+    {
+        return $query->where('id', $id);
+    }
 }
