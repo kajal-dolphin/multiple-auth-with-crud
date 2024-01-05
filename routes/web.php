@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Dashboard\AdminDashboardController;
 use App\Http\Controllers\Admin\Dashboard\DashboardController;
 use App\Http\Controllers\Admin\TaskList\TaskListController;
 use App\Http\Controllers\Admin\User\UserController;
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\Front\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\Front\Dashboard\DashboardController as DashboardDashboardController;
 use App\Http\Controllers\Front\Dashboard\HomePageController;
@@ -66,4 +67,6 @@ Route::get('/edit-tasklist/{id}',[TaskListController::class,'edit'])->name('task
 Route::post('/update-task',[TaskListController::class,'update'])->name('tasklist.update');
 Route::get('/delete-task/{id}',[TaskListController::class,'delete'])->name('tasklist.delete');
 Route::get('/change-task-status',[TaskListController::class,'changeStatus'])->name('tasklist.change.status');
+
+Route::get('/practice-collection',[CollectionController::class,'practiceCollection'])->name('practice.collection');
 

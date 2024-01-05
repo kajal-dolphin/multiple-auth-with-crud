@@ -52,6 +52,15 @@
                             </p>
                         </a>
                     @endif
+                    @if(Auth::guard('admin')->check())
+                        <a href="{{ route('practice.collection')}}" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Practice collection
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    @endif
                     {{-- <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a class="nav-link active" href="">

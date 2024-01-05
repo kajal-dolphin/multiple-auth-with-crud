@@ -20,7 +20,11 @@ class UserObserver
      */
     public function updated(User $user): void
     {
-        //
+        if($user->wasChanged('name')){
+            // name has changed
+            $new_name = $user->name; 
+            $old_name = $user->getOriginal('name');
+        }
     }
 
     /**
