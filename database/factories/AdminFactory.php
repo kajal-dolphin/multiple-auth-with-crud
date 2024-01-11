@@ -23,4 +23,5 @@ class AdminFactory extends Factory
             'password' => Hash::make('123456'),
         ];
     }
+    
 }
